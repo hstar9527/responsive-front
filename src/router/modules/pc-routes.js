@@ -17,10 +17,10 @@ export default [
       {
         path: '/profile',
         name: 'profile',
-        component: () => import('@/views/profile/ptest.vue')
-        // meta: {
-        //   user: true
-        // }
+        component: () => import('@/views/profile/index.vue'),
+        meta: {
+          user: true
+        }
       },
       {
         path: '/member',

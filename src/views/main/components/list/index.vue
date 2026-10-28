@@ -8,7 +8,7 @@
     >
       <m-waterfall
         :data="pexelsList"
-        :column="isMobileTerminal ? 2 : 5"
+        :column="waterfallColumn"
         :picturePreReading="false"
         class="w-full px-1"
       >
@@ -30,16 +30,29 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { getPexelsList } from '@/api/pexels'
 import itemVue from './item.vue'
-import { isMobileTerminal } from '@/utils/flexible'
+// 命名为 windowWidth，避免和瀑布流插槽暴露的 width 变量重名
+import { width as windowWidth } from '@/utils/flexible'
+import { PC_DEVICE_WIDTH } from '@/constants'
 import { useStore } from 'vuex'
 import pinsVue from '@/views/pins/components/pins.vue'
 import gsap from 'gsap'
 import { useEventListener } from '@vueuse/core'
 
 const store = useStore()
+
+/**
+ * 瀑布流列数：按视口宽度分级，保证持续拖动窗口时列数会随宽度变化
+ */
+const waterfallColumn = computed(() => {
+  const w = windowWidth.value
+  if (w < 640) return 2
+  if (w < 1024) return 3
+  if (w < PC_DEVICE_WIDTH) return 4
+  return 5
+})
 
 /**
  * 构建数据请求

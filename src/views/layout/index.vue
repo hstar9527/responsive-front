@@ -1,11 +1,12 @@
 <template>
   <div class="h-screen">
-    <!-- 需要在 tailwind 中定义 h-header、h-main 高度 -->
-    <header-vue class="h-header"></header-vue>
-    <div class="h-main">
+    <!-- 移动端不展示 header，对应 mobile 路由下没有 header 的表现 -->
+    <header-vue v-if="!isMobileTerminal" class="h-header"></header-vue>
+    <!-- 移动端占满整屏，PC 端需要减去 header 的高度 -->
+    <div :class="isMobileTerminal ? 'h-screen' : 'h-main'">
       <main-vue></main-vue>
     </div>
-    <floating-vue></floating-vue>
+    <floating-vue v-if="!isMobileTerminal"></floating-vue>
   </div>
 </template>
 
@@ -13,7 +14,7 @@
 import HeaderVue from './components/header/index.vue'
 import mainVue from './components/main.vue'
 import floatingVue from './components/floating/index.vue'
-import {} from 'vue'
+import { isMobileTerminal } from '@/utils/flexible'
 </script>
 
 <style lang="scss" scoped></style>
